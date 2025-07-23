@@ -1,12 +1,13 @@
 variable "env_s3_bucket" {
-  description = "S3 bucket name to store env file"
-  default     = "my-ecs-env-bucket"
+  description = "Name of the S3 bucket containing the .env file"
+  type        = string
 }
 
 variable "env_s3_key" {
-  description = "Key (filename) for the uploaded env file"
-  default     = "app.env"
+  description = "Key path to the .env file in the S3 bucket"
+  type        = string
 }
+
 
 
 variable "bucket_name" {
