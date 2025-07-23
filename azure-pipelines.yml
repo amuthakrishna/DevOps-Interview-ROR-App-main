@@ -59,16 +59,20 @@ stages:
         steps:
           - checkout: self
 
-          - script: terraform init
+          - script: 
+              cd infrastructure
+              terraform init
             displayName: 'Terraform Init'
 
           - script: |
+              cd infrastructure
               terraform plan \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Plan'
 
           - script: |
+              cd infrastructure
               terraform apply -auto-approve \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
