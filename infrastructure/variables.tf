@@ -39,6 +39,11 @@ variable "env_s3_key" {
   default     = "env/rails-app.env"
 }
 
+variable "bucket_name" {
+  default="rail-app"
+
+}
+
 variable "alb_sg_ingress_cidr" {
   description = "CIDR blocks allowed to access ALB"
   type        = list(string)
@@ -66,7 +71,7 @@ variable "db_username" {
 variable "db_password" {
   description = "Database password"
   type        = string
-  default     = "krishnamoorthy123"
+  sensitive   = true
 }
 
 variable "container_image_webserver" {
