@@ -1,41 +1,31 @@
 variable "project_name" {
-  description = "Project name prefix for resources"
+  description = "Project name prefix"
   type        = string
+  default     = "rails-app"
 }
 
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "public_subnet_cidrs" {
+  description = "List of CIDRs for public subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+}
+
+variable "private_subnet_cidrs" {
+  description = "List of CIDRs for private subnets"
+  type        = list(string)
+  default     = ["10.0.101.0/24", "10.0.102.0/24"]
 }
 
 variable "availability_zones" {
   description = "List of availability zones to use"
   type        = list(string)
-}
-
-variable "public_subnet_cidrs" {
-  description = "CIDRs for public subnets"
-  type        = list(string)
-}
-
-variable "private_subnet_cidrs" {
-  description = "CIDRs for private subnets"
-  type        = list(string)
-}
-
-variable "alb_sg_ingress_cidr" {
-  description = "Ingress CIDR block for the ALB security group"
-  type        = string
-}
-
-variable "container_image_webserver" {
-  description = "Docker image URI for Rails webserver"
-  type        = string
-}
-
-variable "container_image_nginx" {
-  description = "Docker image URI for nginx container"
-  type        = string
+  default     = ["ap-south-1a", "ap-south-1b"]
 }
 
 variable "env_s3_bucket" {
@@ -44,6 +34,53 @@ variable "env_s3_bucket" {
 }
 
 variable "env_s3_key" {
-  description = "S3 key path to the .env file"
+  description = "Key path to the .env file in the S3 bucket"
   type        = string
+  default     = "env/rails-app.env"
+}
+
+variable "alb_sg_ingress_cidr" {
+  description = "CIDR blocks allowed to access ALB"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+  default     = "railsapp"
+}
+
+variable "db_username" {
+  description = "Database username"
+  type        = string
+  default     = "postgres"
+}
+
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "container_image_webserver" {
+  description = "Docker image for Rails webserver"
+  type        = string
+}
+
+variable "container_image_nginx" {
+  description = "Docker image for Nginx"
+  type        = string
+}
+
+variable "image_tag" {
+  description = "Docker image tag"
+  type        = string
+  default     = "latest"
 }

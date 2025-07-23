@@ -2,24 +2,9 @@ provider "aws" {
   region = var.aws_region
 }
 
-data "aws_s3_object" "rails_env_file" {
-  bucket = var.env_s3_bucket
-  key    = var.env_s3_key
-}
-
-locals {
-  rails_env_content = data.aws_s3_object.rails_env_file.body
-
-  db_name         = regex("(?m)^RDS_DB_NAME=(.*)$", local.rails_env_content)[0]
-  db_username     = regex("(?m)^RDS_USERNAME=(.*)$", local.rails_env_content)[0]
-  db_password     = regex("(?m)^RDS_PASSWORD=(.*)$", local.rails_env_content)[0]
-  s3_bucket_name  = regex("(?m)^S3_BUCKET_NAME=(.*)$", local.rails_env_content)[0]
-  s3_region_name  = regex("(?m)^S3_REGION_NAME=(.*)$", local.rails_env_content)[0]
-}
-
 module "vpc" {
   source              = "./modules/vpc"
-  project_name        = var.project_name
+  
   availability_zones  = var.availability_zones
   vpc_cidr            = var.vpc_cidr
   public_subnet_cidrs = var.public_subnet_cidrs
@@ -36,21 +21,28 @@ module "alb" {
 
 module "rds" {
   source               = "./modules/rds"
+  project_name         = var.project_name
   private_subnet_ids   = module.vpc.private_subnets
   private_subnet_cidrs = var.private_subnet_cidrs
   vpc_id               = module.vpc.vpc_id
 
-  db_name     = local.db_name
-  db_username = local.db_username
-  db_password = local.db_password
+  db_name     = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
 }
 
 module "s3" {
   source         = "./modules/s3"
-  bucket_name    = local.s3_bucket_name
-  aws_region     = local.s3_region_name
+  bucket_name    = var.env_s3_bucket
+  aws_region     = var.aws_region
   env_s3_key     = var.env_s3_key
-  env_s3_bucket  = local.s3_bucket_name
+  
+  # Pass database and ALB info to create env file
+  db_host      = module.rds.db_endpoint
+  lb_endpoint  = module.alb.alb_dns_name
+  db_name      = var.db_name
+  db_username  = var.db_username
+  db_password  = var.db_password
 }
 
 module "ecr" {
@@ -66,8 +58,8 @@ module "ecs" {
   alb_sg_id                 = module.alb.alb_sg_id
   container_image_webserver = var.container_image_webserver
   container_image_nginx     = var.container_image_nginx
-  env_s3_bucket             = local.s3_bucket_name
+  env_s3_bucket             = var.env_s3_bucket
   env_s3_key                = var.env_s3_key
-  aws_region                = local.s3_region_name
+  aws_region                = var.aws_region
   project_name              = var.project_name
 }

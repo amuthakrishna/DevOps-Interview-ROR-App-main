@@ -1,13 +1,17 @@
-resource "aws_ecr_repository" "laravel_repo" {
-  name                 = var.ecr_repo_name
+resource "aws_ecr_repository" "webserver" {
+  name                 = "${var.project_name}-webserver"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
     scan_on_push = true
   }
+}
 
-  tags = {
-    Environment = "production"
-    Application = "Laravel"
+resource "aws_ecr_repository" "nginx" {
+  name                 = "${var.project_name}-nginx"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
   }
 }

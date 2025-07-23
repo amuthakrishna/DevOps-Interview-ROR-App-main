@@ -18,3 +18,9 @@ variable "target_group_port" {
   type        = number
   default     = 80
 }
+
+variable "alb_sg_ingress_cidr" {
+  description = "CIDR blocks allowed to access ALB"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
