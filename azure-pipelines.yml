@@ -36,10 +36,10 @@ stages:
 
           - script: |
               echo "Building the Docker webserver image"
-              docker build . -t $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG) -f docker/app/Dockerfile 
+              docker build . -t $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG) -f project/docker/app/Dockerfile 
 
               echo "Building the Docker nginx image"
-              docker build . -t $(IMAGE_NAME_NGINX):$(IMAGE_TAG) -f docker/nginx/Dockerfile
+              docker build . -t $(IMAGE_NAME_NGINX):$(IMAGE_TAG) -f project/docker/nginx/Dockerfile
 
               echo "Pushing the Docker image..."
               docker push $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG)
