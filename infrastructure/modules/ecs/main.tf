@@ -160,14 +160,15 @@ resource "aws_ecs_service" "app" {
 
 
 resource "aws_iam_policy" "s3_read_env" {
-  name        = "ecs-read-env"
-  description = "Allow ECS task to read env file from S3"
-  policy      = jsonencode({
+  name        = "${var.project_name}-s3-env-read-policy"
+  description = "Allows ECS task to read env file from S3"
+
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = ["s3:GetObject"],
+        Effect = "Allow",
+        Action = ["s3:GetObject"],
         Resource = "arn:aws:s3:::${var.env_s3_bucket}/${var.env_s3_key}"
       }
     ]

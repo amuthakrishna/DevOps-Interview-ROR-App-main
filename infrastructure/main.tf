@@ -11,9 +11,6 @@ module "rds" {
   private_subnet_ids   = module.vpc.private_subnets
   private_subnet_cidrs = var.private_subnet_cidrs
   vpc_id               = module.vpc.vpc_id
-  db_username          = var.db_username
-  db_password          = var.db_password
-  db_name              = var.db_name
 }
 
 module "alb" {
@@ -26,16 +23,13 @@ module "alb" {
 
 module "s3" {
   source      = "./modules/s3"
-  bucket_name = "my-ecs-env-bucket"
+ 
 }
 
 data "template_file" "rails_env" {
   template = file("${path.module}/modules/s3/env/rails-app.env.tpl")
 
   vars = {
-    db_name        = var.db_name
-    db_username    = var.db_username
-    db_password    = var.db_password
     db_host        = module.rds.rds_endpoint
     lb_endpoint    = module.alb.alb_dns_name
     s3_bucket_name = module.s3.bucket_name
@@ -43,12 +37,15 @@ data "template_file" "rails_env" {
   }
 }
 
+
 resource "aws_s3_object" "rails_env_file" {
-  bucket       = module.s3.bucket_name
-  key          = "env/rails-app.env"
-  content      = data.template_file.rails_env.rendered
-  content_type = "text/plain"
+  bucket                  = module.s3.bucket_name
+  key                     = "env/rails-app.env"
+  content                 = data.template_file.rails_env.rendered
+  content_type            = "text/plain"
+  server_side_encryption = "AES256"
 }
+
 
 module "ecs" {
   source                    = "./modules/ecs"

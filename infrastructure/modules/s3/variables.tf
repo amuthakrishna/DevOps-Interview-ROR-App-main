@@ -8,6 +8,13 @@ variable "env_s3_key" {
   default     = "app.env"
 }
 
+
+variable "bucket_name" {
+  description = "S3 bucket name for environment file"
+  type        = string
+}
+
 variable "aws_region" {
-  description = "AWS region"
+  description = "AWS region where S3 bucket is created"
+  type        = string
 }

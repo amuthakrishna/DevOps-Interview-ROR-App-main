@@ -1,8 +1,8 @@
 RDS_DB_NAME=railsapp
 RDS_USERNAME=postgres
-RDS_PASSWORD=krihsnamoorthy123
+RDS_PASSWORD=Kr!shSecure123
 RDS_HOSTNAME=${db_host}
 RDS_PORT=5432
 S3_BUCKET_NAME=${s3_bucket_name}
-S3_REGION_NAME=ap-south-1
+S3_REGION_NAME=${aws_region}
 LB_ENDPOINT=${lb_endpoint}

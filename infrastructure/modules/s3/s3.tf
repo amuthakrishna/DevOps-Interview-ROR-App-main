@@ -1,10 +1,8 @@
-resource "aws_s3_bucket" "env_file_bucket" {
-  bucket = var.env_s3_bucket
 
+
+resource "aws_s3_bucket" "env_bucket" {
+  bucket = var.bucket_name
   tags = {
-    Name        = "env-file-bucket"
-    Environment = "dev"
+    Name = var.bucket_name
   }
 }
-
-
