@@ -8,10 +8,13 @@ variable "aws_region" {
   type        = string
 }
 
+variable "env_s3_bucket" {
+  description = "Name of the S3 bucket containing the .env file"
+  type        = string
+}
 variable "env_s3_key" {
   description = "Key path to the .env file in the S3 bucket"
   type        = string
-  default     = "env/rails-app.env"
 }
 
 variable "db_host" {

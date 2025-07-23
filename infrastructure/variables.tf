@@ -84,8 +84,3 @@ variable "container_image_nginx" {
   type        = string
 }
 
-variable "image_tag" {
-  description = "Docker image tag"
-  type        = string
-  default     = "latest"
-}

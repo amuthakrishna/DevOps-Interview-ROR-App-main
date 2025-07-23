@@ -203,3 +203,30 @@ resource "aws_ecs_service" "app" {
     Name = "${var.project_name}-service"
   }
 }
+
+
+resource "aws_iam_role_policy" "ecs_execution_s3_env" {
+  name = "${var.project_name}-ecs-execution-s3-env-policy"
+  role = aws_iam_role.ecs_task_execution_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ],
+        Resource = [
+          "arn:aws:s3:::${var.env_s3_bucket}/${var.env_s3_key}",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_execution_s3_readonly" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+}
