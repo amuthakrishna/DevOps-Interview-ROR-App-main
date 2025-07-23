@@ -8,7 +8,7 @@ ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
 RUN gem install bundler
 RUN bundle install --jobs 20 --retry 5
-ADD . .
+ADD project .
 RUN bundle exec rails assets:precompile
 
 ADD docker/app/entrypoint.sh /usr/bin/
