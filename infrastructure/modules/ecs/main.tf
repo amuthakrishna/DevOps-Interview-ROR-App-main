@@ -168,11 +168,12 @@ resource "aws_iam_policy" "s3_read_env" {
       {
         Effect   = "Allow",
         Action   = ["s3:GetObject"],
-        Resource = "arn:aws:s3:::railsapp-secrets-bucket/env/rails-app.env"
+        Resource = "arn:aws:s3:::${var.env_s3_bucket}/${var.env_s3_key}"
       }
     ]
   })
 }
+
 
 resource "aws_iam_role_policy_attachment" "ecs_env_policy_attach" {
   role       = aws_iam_role.ecs_task_execution_role.name

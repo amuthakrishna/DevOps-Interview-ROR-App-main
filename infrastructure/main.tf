@@ -54,3 +54,20 @@ module "ecs" {
 #  source        = "./modules/ecr"
 #  ecr_repo_name = "laravel"
 #}
+data "template_file" "rails_env" {
+  template = file("${path.module}/modules/s3/env/rails-app.env.tpl")
+
+  vars = {
+    db_host         = module.rds.rds_endpoint
+    lb_endpoint     = module.alb.alb_dns_name
+    s3_bucket_name  = module.s3.bucket_name
+    aws_region      = var.aws_region
+  }
+}
+
+resource "aws_s3_object" "rails_env" {
+  bucket = module.s3.bucket_name
+  key    = "env/rails-app.env"
+  content = data.template_file.rails_env.rendered
+  content_type = "text/plain"
+}
