@@ -29,11 +29,7 @@ module "s3" {
   source        = "./modules/s3"
   env_s3_bucket = "my-ecs-env-bucket"
   env_s3_key    = "app.env"
-
-  db_name        = var.db_name
-  db_username    = var.db_username
-  db_password    = var.db_password
-  db_host        = module.rds.db_endpoint
+  db_host       = module.rds.db_endpoint
   s3_bucket_name = "my-ecs-env-bucket"
   aws_region     = var.aws_region
   lb_endpoint    = module.alb.alb_dns_name

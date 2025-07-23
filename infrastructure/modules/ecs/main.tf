@@ -157,3 +157,24 @@ resource "aws_ecs_service" "app" {
     aws_iam_role_policy_attachment.ecs_execution_role_policy
   ]
 }
+
+
+resource "aws_iam_policy" "s3_read_env" {
+  name        = "ecs-read-env"
+  description = "Allow ECS task to read env file from S3"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = ["s3:GetObject"],
+        Resource = "arn:aws:s3:::railsapp-secrets-bucket/env/rails-app.env"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_env_policy_attach" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = aws_iam_policy.s3_read_env.arn
+}
