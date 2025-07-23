@@ -1,35 +1,49 @@
 variable "project_name" {
-  default = "rails-app"
-}
-
-variable "vpc_cidr" {
-  default = "10.0.0.0/16"
-}
-
-variable "public_subnet_cidrs" {
-  default = ["10.0.1.0/24", "10.0.2.0/24"]
-}
-
-variable "private_subnet_cidrs" {
-  default = ["10.0.101.0/24", "10.0.102.0/24"]
-}
-
-variable "availability_zones" {
-  default = ["ap-south-1a", "ap-south-1b"]
-}
-variable "s3_bucket_name" {
-  description = "Name of the S3 bucket to store environment files"
+  description = "Project name prefix for resources"
   type        = string
 }
 
 variable "aws_region" {
-  default = "ap-south-1"
+  description = "AWS Region"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
+  type        = string
+}
+
+variable "public_subnet_cidrs" {
+  description = "CIDR blocks for the public subnets"
+  type        = list(string)
+}
+
+variable "private_subnet_cidrs" {
+  description = "CIDR blocks for the private subnets"
+  type        = list(string)
+}
+
+variable "alb_sg_ingress_cidr" {
+  description = "Ingress CIDR block for the ALB security group"
+  type        = string
 }
 
 variable "container_image_webserver" {
-  type = string
+  description = "Docker image URI for Rails webserver"
+  type        = string
 }
 
 variable "container_image_nginx" {
-  type = string
+  description = "Docker image URI for nginx container"
+  type        = string
+}
+
+variable "env_s3_bucket" {
+  description = "Name of the S3 bucket containing the .env file"
+  type        = string
+}
+
+variable "env_s3_key" {
+  description = "S3 key path to the .env file"
+  type        = string
 }
