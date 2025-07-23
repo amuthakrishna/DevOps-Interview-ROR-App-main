@@ -1,6 +1,7 @@
 variable "bucket_name" {
   description = "S3 bucket name for environment file"
   type        = string
+  default = "rail-app"
 }
 
 variable "aws_region" {
