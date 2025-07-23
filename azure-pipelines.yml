@@ -6,7 +6,6 @@ pool:
 
 variables:
   - group: aws-ecr
-  - 
   - name: IMAGE_TAG
     value: $(Build.BuildId)
 
