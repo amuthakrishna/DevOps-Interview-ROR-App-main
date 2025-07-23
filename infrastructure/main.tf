@@ -7,12 +7,16 @@ module "vpc" {
 }
 
 module "s3" {
-  source = "./modules/s3"
+  source         = "./modules/s3"
+  bucket_name    = var.s3_bucket_name
+  aws_region     = var.aws_region
+  env_s3_key     = "env/rails-app.env"
+  env_s3_bucket  = var.s3_bucket_name
 }
 
 # Load existing .env file from S3 and parse RDS credentials
 data "aws_s3_object" "rails_env_file" {
-  bucket = var.env_s3_bucket
+  bucket = var.bucket_name
   key    = var.env_s3_key
 }
 

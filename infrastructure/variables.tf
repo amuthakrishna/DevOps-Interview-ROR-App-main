@@ -17,7 +17,10 @@ variable "private_subnet_cidrs" {
 variable "availability_zones" {
   default = ["ap-south-1a", "ap-south-1b"]
 }
-
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket to store environment files"
+  type        = string
+}
 
 variable "aws_region" {
   default = "ap-south-1"
