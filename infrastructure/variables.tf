@@ -66,7 +66,7 @@ variable "db_username" {
 variable "db_password" {
   description = "Database password"
   type        = string
-  sensitive   = true
+  default     = "krishnamoorthy123"
 }
 
 variable "container_image_webserver" {
