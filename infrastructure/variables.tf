@@ -19,14 +19,22 @@ variable "availability_zones" {
 }
 
 variable "db_username" {
-  default = "aduser"
+  description = "RDS DB username"
+  type        = string
 }
+
 variable "db_password" {
-  default = "aduser"
+  description = "RDS DB password"
+  type        = string
+  sensitive   = true
 }
+
 variable "db_name" {
-  default = "rail_app"
+  description = "RDS DB name"
+  type        = string
 }
+
+
 
 variable "aws_region" {
   default = "ap-south-1"

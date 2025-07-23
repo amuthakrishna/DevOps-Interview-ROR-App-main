@@ -8,11 +8,6 @@ variable "env_s3_key" {
   default     = "app.env"
 }
 
-variable "db_name" {}
-variable "db_username" {}
-variable "db_password" {}
-variable "db_host" {}
-
-variable "s3_bucket_name" {}
-variable "aws_region" {}
-variable "lb_endpoint" {}
+variable "aws_region" {
+  description = "AWS region"
+}
