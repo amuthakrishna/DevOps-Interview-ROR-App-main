@@ -44,15 +44,15 @@ resource "aws_subnet" "private" {
   }
 }
 
-# NAT Gateway (Single-AZ for simplicity)
+resource "aws_eip" "nat_eip" {
+  vpc = true
+}
+
 resource "aws_nat_gateway" "nat" {
-   
-  subnet_id     = aws_subnet.public[0].id
-
-  depends_on = [aws_internet_gateway.igw]
-
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = var.public_subnet_ids[0]
   tags = {
-    Name = "main-nat-gateway"
+    Name = "${var.project_name}-nat-gateway"
   }
 }
 
