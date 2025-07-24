@@ -45,7 +45,11 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  # Simply remove the vpc line
+  depends_on = [aws_internet_gateway.gw] # optional, if needed to wait
+  tags = {
+    Name = "${var.project_name}-nat-eip"
+  }
 }
 
 resource "aws_nat_gateway" "nat" {
