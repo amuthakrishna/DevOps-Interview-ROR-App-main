@@ -5,7 +5,7 @@ pool:
   name: 'Default'  # Use 'ubuntu-latest' if you are not using a self-hosted agent
 
 variables:
-  TF_ROOT: 'infrastructure'
+ 
   - group: aws_ecr_repo  # Ensure this variable group exists in your pipeline library
   - name: IMAGE_TAG
     value: $(Build.BuildId)
@@ -67,18 +67,21 @@ stages:
 
           - script: terraform init
             displayName: 'Terraform Init'
-            workingDirectory: $(TF_ROOT)
+            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+            
 
           - script: |
               terraform plan \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Plan'
-            workingDirectory: $(TF_ROOT)
+            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+           
 
           - script: |
               terraform apply -auto-approve \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Apply'
-            workingDirectory: $(TF_ROOT)
+            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+           
