@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source               = "./modules/vpc"
+  source               = "./infrastructure/vpc"
   cidr_block           = var.vpc_cidr_block
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
@@ -11,7 +11,7 @@ module "vpc" {
 }
 
 module "rds" {
-  source               = "./modules/rds"
+  source               = "./infrastructure/rds"
   vpc_id               = module.vpc.vpc_id
   private_subnet_ids   = module.vpc.private_subnets
   private_subnet_cidrs = var.private_subnet_cidrs
@@ -21,7 +21,7 @@ module "rds" {
 }
 
 module "s3" {
-  source       = "./modules/s3"
+  source       = "./infrastructure/s3"
   project_name = var.project_name
   db_name      = var.db_name
   db_username  = var.db_username
@@ -32,7 +32,7 @@ module "s3" {
 }
 
 module "alb" {
-  source              = "./modules/alb"
+  source              = "./infrastructure/alb"
   project_name        = var.project_name
   vpc_id              = module.vpc.vpc_id
   public_subnet_ids   = module.vpc.public_subnets
@@ -40,12 +40,12 @@ module "alb" {
 }
 
 module "ecr" {
-  source       = "./modules/ecr"
+  source       = "./infrastructure/ecr"
   project_name = var.project_name
 }
 
 module "ecs" {
-  source                  = "./modules/ecs"
+  source                  = "./infrastructure/ecs"
   project_name            = var.project_name
   vpc_id                  = module.vpc.vpc_id
   private_subnet_ids      = module.vpc.private_subnets
