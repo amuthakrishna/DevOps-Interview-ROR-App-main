@@ -39,10 +39,6 @@ module "alb" {
   alb_sg_ingress_cidr = var.alb_sg_ingress_cidr
 }
 
-module "ecr" {
-  source       = "./infrastructure/ecr"
-  project_name = var.project_name
-}
 
 module "ecs" {
   source                  = "./infrastructure/ecs"
