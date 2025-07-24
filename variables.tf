@@ -66,3 +66,9 @@ variable "container_image_nginx" {
   description = "Docker image for the nginx container"
   type        = string
 }
+
+variable "availability_zones" {
+  description = "List of availability zones to use"
+  type        = list(string)
+  
+}

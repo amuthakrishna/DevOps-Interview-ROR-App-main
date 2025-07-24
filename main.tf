@@ -41,15 +41,15 @@ module "alb" {
 
 
 module "ecs" {
-  source                  = "./infrastructure/ecs"
-  project_name            = var.project_name
-  vpc_id                  = module.vpc.vpc_id
-  private_subnet_ids      = module.vpc.private_subnets
-  alb_target_group_arn    = module.alb.target_group_arn
-  alb_sg_id               = module.alb.alb_sg_id
+  source                    = "./infrastructure/ecs"
+  project_name              = var.project_name
+  vpc_id                    = module.vpc.vpc_id
+  private_subnet_ids        = module.vpc.private_subnets
+  alb_target_group_arn      = module.alb.target_group_arn
+  alb_sg_id                 = module.alb.alb_sg_id
   container_image_webserver = var.container_image_webserver
-  container_image_nginx  = var.container_image_nginx
-  env_s3_bucket          = module.s3.app_storage_bucket
-  env_s3_key             = "rails_app.env"
-  aws_region             = var.aws_region
+  container_image_nginx     = var.container_image_nginx
+  env_s3_bucket             = module.s3.app_storage_bucket
+  env_s3_key                = "rails_app.env"
+  aws_region                = var.aws_region
 }
