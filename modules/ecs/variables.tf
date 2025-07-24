@@ -27,15 +27,12 @@ variable "container_image_nginx" {
 }
 
 variable "env_s3_bucket" {
-  description = "S3 bucket name containing the env file"
-  type        = string
+  type = string
 }
 
 variable "env_s3_key" {
-  description = "S3 object key for the env file"
-  type        = string
+  type = string
 }
-
 
 variable "aws_region" {
   type = string

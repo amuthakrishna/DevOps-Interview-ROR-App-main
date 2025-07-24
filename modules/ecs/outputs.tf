@@ -1,6 +1,6 @@
 output "ecs_cluster_name" {
   description = "ECS Cluster Name"
-  value       = aws_ecs_cluster.main.name
+  value       = aws_ecs_cluster.app.name
 }
 
 output "ecs_service_name" {
