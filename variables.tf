@@ -56,3 +56,13 @@ variable "env_s3_key" {
   type        = string
   default     = "rails_app.env"
 }
+
+variable "container_image_webserver" {
+  description = "Docker image for the webserver container"
+  type        = string
+}
+
+variable "container_image_nginx" {
+  description = "Docker image for the nginx container"
+  type        = string
+}

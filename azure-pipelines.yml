@@ -73,7 +73,8 @@ stages:
           - script: |
               terraform plan \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
-                -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
+                -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)" \
+                -var-file="terraform.tfvars"
             displayName: 'Terraform Plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
            
@@ -81,7 +82,8 @@ stages:
           - script: |
               terraform apply -auto-approve \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
-                -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
+                -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)" \
+                -var-file="terraform.tfvars"
             displayName: 'Terraform Apply'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
            
