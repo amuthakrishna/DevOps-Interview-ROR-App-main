@@ -67,7 +67,7 @@ stages:
 
           - script: terraform init
             displayName: 'Terraform Init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/modules'
             
 
           - script: |
@@ -75,7 +75,7 @@ stages:
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Plan'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/modules'
            
 
           - script: |
@@ -83,5 +83,5 @@ stages:
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Apply'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/modules'
            
