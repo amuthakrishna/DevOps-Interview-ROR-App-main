@@ -1,4 +1,4 @@
-project_name = "ror-app"
+project_name = "railsapp"
 aws_region   = "ap-south-1"
 
 vpc_cidr_block = "10.0.0.0/16"
