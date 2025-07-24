@@ -61,7 +61,7 @@ resource "aws_nat_gateway" "nat" {
     Name = "${var.project_name}-nat-gateway"
   }
 
-  depends_on = [aws_internet_gateway.igw]
+  depends_on = [aws_internet_gateway.gw]
 }
 
 # Public Route Table
