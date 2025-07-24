@@ -2,10 +2,11 @@ trigger:
   - main
 
 pool:
-  name: 'Default'
+  name: 'Default'  # Use 'ubuntu-latest' if you are not using a self-hosted agent
 
 variables:
-  - group: aws_ecr_repo
+  TF_ROOT: 'infrastructure'
+  - group: aws_ecr_repo  # Ensure this variable group exists in your pipeline library
   - name: IMAGE_TAG
     value: $(Build.BuildId)
 
@@ -29,6 +30,8 @@ stages:
       - job: DockerBuildPush
         displayName: Build and Push Image
         steps: 
+          - checkout: self
+
           - script: |
               echo "IMAGE_NAME: $(IMAGE_NAME)"
               echo "IMAGE_TAG: $(IMAGE_TAG)"
@@ -36,16 +39,15 @@ stages:
 
           - script: |
               echo "Building the Docker webserver image"
-              docker build . -t $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG) -f project/docker/app/Dockerfile 
+              docker build -t $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG) -f project/docker/app/Dockerfile .
 
               echo "Building the Docker nginx image"
-              docker build . -t $(IMAGE_NAME_NGINX):$(IMAGE_TAG) -f project/docker/nginx/Dockerfile
+              docker build -t $(IMAGE_NAME_NGINX):$(IMAGE_TAG) -f project/docker/nginx/Dockerfile .
 
-              echo "Pushing the Docker image..."
+              echo "Pushing the Docker images..."
               docker push $(IMAGE_NAME_WEBSERVER):$(IMAGE_TAG)
               docker push $(IMAGE_NAME_NGINX):$(IMAGE_TAG)
-            displayName: 'Build and Push Docker Image'
-
+            displayName: 'Build and Push Docker Images'
 
   - stage: Terraform
     displayName: Terraform Apply
@@ -56,25 +58,27 @@ stages:
 
     jobs:
       - job: Terraform
+        displayName: Terraform Job
         steps:
           - checkout: self
 
+          - script: terraform version
+            displayName: 'Check Terraform Version'
+
           - script: terraform init
             displayName: 'Terraform Init'
-            workingDirectory: infrastructure
+            workingDirectory: $(TF_ROOT)
 
           - script: |
               terraform plan \
-               
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Plan'
-            workingDirectory: infrastructure
+            workingDirectory: $(TF_ROOT)
 
           - script: |
               terraform apply -auto-approve \
                 -var="container_image_webserver=$(CONTAINER_IMAGE_WEBSERVER)" \
                 -var="container_image_nginx=$(CONTAINER_IMAGE_NGINX)"
             displayName: 'Terraform Apply'
-            workingDirectory: infrastructure
-
+            workingDirectory: $(TF_ROOT)
